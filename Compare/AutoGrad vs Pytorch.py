@@ -1,15 +1,25 @@
 from AutoGrad.My_engine import Value, train
-import AutoGrad.neural_net as nn
+from AutoGrad.neural_net import NeuralNet
 from AutoGrad.display import draw_dot
 import torch
 
-# Create a simple neural network using AutoGrad
-model = nn.MLP(2, [4, 3, 1])
+def main():
+    # Define the neural network using AutoGrad
+    net = NeuralNet([
+        Value(2, name='x1'),
+        Value(3, name='x2'),
+        Value(4, name='x3'),
+        Value(5, name='x4'),
+        Value(6, name='x5')
+    ])
 
-# Create some dummy input data
-x = [Value(0.5), Value(-0.5)]
+    # Train the network
+    train(net)
 
-Loss = train(model, [x], [Value(1.0)], steps=1000, learningRate=0.01)
+    # Draw the computation graph
+    draw_dot(net)
 
-# Visualize the computation graph
-draw_dot(Loss).render('autograd_model', format='png')
+    # Print the final values of the inputs
+    print("Final values:")
+    for i in range(1, 6):
+        print(f"x{i}: {getattr(net, f'x{i}').data}")
