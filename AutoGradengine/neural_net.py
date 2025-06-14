@@ -1,7 +1,6 @@
 import random
 from My_engine import Value
 
-
 class Neuron:
     def __init__(self, inputs):
         self.w = [Value(random.uniform(-1, 1)) for _ in range(inputs)]
@@ -49,9 +48,3 @@ class MLP:
             params.extend(layer.parameters())
         return params
     
-
-def loss(Ygt, Ypred):
-        assert len(Ygt) == len(Ypred), "Ground truth and prediction must have the same length"
-        loss = sum((y_gt - y_pred) ** 2 for y_gt, y_pred in zip(Ygt, Ypred)) 
-        return loss
-        
