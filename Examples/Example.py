@@ -1,6 +1,6 @@
-from AutoGradengine.neural_net import MLP
-from AutoGradengine.My_engine import train
-from AutoGradengine.display import draw_dot
+from AutoGrad.neural_net import MLP
+from AutoGrad.My_engine import train
+from AutoGrad.display import draw_dot
 
 xs = [
   [2.0, 3.0, -1.0],
