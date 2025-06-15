@@ -15,13 +15,14 @@ AutoGrad is a minimal neural network engine with automatic differentiation, insp
 ---
 
 ## Project Structure
-- AutoGrad/ display.py # Visualization utilities for computation - graphs My_engine.py # Core engine for autograd and training neural_net.py # Neural network (MLP) implementation pycache/ # Python cache files 
-
-- Compare/ AutoGrad vs Pytorch.py # Script for comparing with PyTorch README.md 
-
-- Examples/ Example.py # Example usage and training script example.svg # Example output graph 
-
-- README.md # Project documentation
+- **AutoGrad/ display.py:**  Visualization utilities for computation graphs 
+- **My_engine.py:**  Core engine for autograd and training 
+- **neural_net.py:** Neural network (MLP) implementation 
+- **pycache:** Python cache files 
+- **AutoGrad vs Pytorch.py** Script for comparing with PyTorch  
+- **Example.py** Example usage and training script 
+- **example.svg** # Example output graph 
+- **README.md**  Project documentation
 
 ---
 
@@ -52,21 +53,10 @@ AutoGrad is a minimal neural network engine with automatic differentiation, insp
 
 ---
 
-## Usage
-
-### Running the Example
-
-Train a simple neural network and visualize the computation graph:
-
-```sh
-python [Example.py](http://_vscodecontentref_/5)
-```
-- This will output training results and generate a model.svg file visualizing the final computation graph.
-
 ## Custom Usage
-- Define neural networks: Use the MLP class in AutoGrad/neural_net.py.
-- Train models: Use the train function in AutoGrad/My_engine.py.
-- Visualize graphs: Use the draw_dot function in AutoGrad/display.py.
+- **Define neural networks:** Use the MLP class in AutoGrad/neural_net.py.
+- **Train models:** Use the train function in AutoGrad/My_engine.py.
+- **Visualize graphs:** Use the draw_dot function in AutoGrad/display.py.
 
 ---
 ## License

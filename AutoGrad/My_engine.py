@@ -10,7 +10,7 @@ class Value:
         self.label = label
 
     def __repr__(self):
-        return f"Value(data={self.data})"
+        return f"Value(data = {self.data}, gradient = {self.gradient}')"
     
     def __add__(self, other):
         other = other if isinstance(other, Value) else Value(other)
@@ -91,6 +91,16 @@ class Value:
 
         return out
     
+    def relu(self):
+        relu = max(0, self.data)
+        out = Value(relu, (self,), 'relu')
+
+        def backpath():
+            self.gradient += (1 if self.data > 0 else 0) * out.gradient
+        out.backpath = backpath
+
+        return out
+    
     def backward(self):    
         topo = []
         visited = set()
@@ -106,31 +116,3 @@ class Value:
         for node in reversed(topo):
             node.backpath()
 
-def train(model, xs, ys, steps=2000, learningRate=0.1):
-    """
-    Trains the given model on the provided data.
-
-    Args:
-        model: The neural network model (must have parameters(), __call__(), etc.).
-        xs: List of input samples.
-        ys: List of ground truth outputs.
-        steps: Number of training iterations.
-        learningRate: Learning rate.
-    """
-    for k in range(steps):
-        # Forward pass
-        ypred = [model(x) for x in xs]
-        loss = sum((yout - ygt)**2 for ygt, yout in zip(ys, ypred))
-
-        # Backward pass
-        for p in model.parameters():
-            p.gradient = 0.0
-        loss.backward()
-
-        # Update
-        for p in model.parameters():
-            p.data += -learningRate * p.gradient
-            
-        print(f"Step: {k}, Loss: {loss.data:.8f}")
-    
-    return loss

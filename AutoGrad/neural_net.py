@@ -1,17 +1,26 @@
 import random
-from My_engine import Value
+from AutoGrad.My_engine import Value
 
+class model:
+    def zeroGrad(self):
+        for p in self.parameters():
+            p.gradient = 0.0
+
+    def parameters(self):
+        return []
+    
 class Neuron:
-    def __init__(self, inputs):
+    def __init__(self, inputs, nonlinear= True):
         self.w = [Value(random.uniform(-1, 1)) for _ in range(inputs)]
-        self.b = Value(random.uniform(-1, 1))
+        self.b = Value(0)
+        self.nonlinear = nonlinear
 
     def __call__(self, x):
         assert len(x) == len(self.w), "Input size must match weights size"
         activation = self.b
         for w_i, x_i in zip(self.w, x):
             activation = activation + (w_i * x_i)
-        out = activation.tanh()
+        out = activation.relu() if self.nonlinear else activation
         return out
 
     def parameters(self):
@@ -31,6 +40,7 @@ class Layer:
         for n in self.neurons:
             params.extend(n.parameters())
         return params
+
 class MLP:
     def __init__(self, inputs, nouts):
         size = [inputs] + nouts
