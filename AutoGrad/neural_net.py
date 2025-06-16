@@ -1,60 +1,57 @@
 import random
 from AutoGrad.My_engine import Value
 
-class model:
+class Module:
+
     def zeroGrad(self):
         for p in self.parameters():
-            p.gradient = 0.0
+            p.gradient = 0
 
     def parameters(self):
         return []
-    
-class Neuron:
-    def __init__(self, inputs, nonlinear= True):
-        self.w = [Value(random.uniform(-1, 1)) for _ in range(inputs)]
+
+class Neuron(Module):
+
+    def __init__(self, nin, nonlin=True):
+        self.w = [Value(random.uniform(-1,1)) for _ in range(nin)]
         self.b = Value(0)
-        self.nonlinear = nonlinear
+        self.nonlin = nonlin
 
     def __call__(self, x):
-        assert len(x) == len(self.w), "Input size must match weights size"
-        activation = self.b
-        for w_i, x_i in zip(self.w, x):
-            activation = activation + (w_i * x_i)
-        out = activation.relu() if self.nonlinear else activation
-        return out
+        act = sum((wi*xi for wi,xi in zip(self.w, x)), self.b)
+        return act.relu() if self.nonlin else act
 
     def parameters(self):
         return self.w + [self.b]
-    
-class Layer:
-    def __init__(self, inputs, nout):
-        self.neurons = [Neuron(inputs) for _ in range(nout)]
+
+class Layer(Module):
+
+    def __init__(self, nin, nout, **kwargs):
+        self.neurons = [Neuron(nin, **kwargs) for _ in range(nout)]
 
     def __call__(self, x):
-        assert len(x) == len(self.neurons[0].w), "Input size must match weights size"
-        outs = [n(x) for n in self.neurons]
-        return outs[0] if len(outs) == 1 else outs
-    
+        out = [n(x) for n in self.neurons]
+        return out[0] if len(out) == 1 else out
+
     def parameters(self):
         params = []
-        for n in self.neurons:
-            params.extend(n.parameters())
+        for neuron in self.neurons:
+            params.extend(neuron.parameters())
         return params
 
-class MLP:
-    def __init__(self, inputs, nouts):
-        size = [inputs] + nouts
-        self.layers = [Layer(size[i], size[i + 1]) for i in range(len(nouts))]
+class MLP(Module):
+
+    def __init__(self, nin, nouts):
+        sz = [nin] + nouts
+        self.layers = [Layer(sz[i], sz[i+1], nonlin=i!=len(nouts)-1) for i in range(len(nouts))]
 
     def __call__(self, x):
-        assert len(x) == len(self.layers[0].neurons[0].w), "Input size must match weights size"
         for layer in self.layers:
             x = layer(x)
         return x
-    
+
     def parameters(self):
         params = []
         for layer in self.layers:
             params.extend(layer.parameters())
         return params
-    

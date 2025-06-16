@@ -1,7 +1,8 @@
 from AutoGrad.neural_net import MLP
+from AutoGrad.My_engine import Value
 from AutoGrad.display import draw_dot
 
-def train(model, inputs, targets, steps=2000, learningRate=0.1):
+def train(model, xs, ys, steps=2000, learningRate=0.1):
     """
     Trains the given model on the provided data.
 
@@ -29,28 +30,38 @@ def train(model, inputs, targets, steps=2000, learningRate=0.1):
         for p in model.parameters():
             p.data -= learning_rate * p.grad
 
-        if k % 100 == 0:
-            print(f"Epoch {k}, Loss: {loss.data:.4f}")
+        print(f"Epoch {k}, Loss: {loss.data:.4f}")
 
     return loss
 
-xs = [
-  [2.0, 3.0, -1.0],
-  [3.0, -1.0, 0.5],
-  [0.5, 1.0, 1.0],
-  [1.0, 1.0, -1.0],
-] # input samples
-ys = [1.0, -1.0, -1.0, 1.0] # desired outputs
-n = MLP(3, [4, 4, 1])  # 3 inputs, 2 hidden layers with 4 neurons each, and 1 output neuron
+def f(x):
+    return 2 * x**2 + 3 * x + 1
+
+import random
+
+def generate_data():
+    inputs = []
+    targets = []
+    x = random.uniform(-10, 10)
+    y = f(x)
+    inputs.append([Value(x)])  # list of one Value object
+    targets.append(Value(y))   # single target Value
+    return inputs, targets
+
+inputs, targets = generate_data()
+
+n = MLP(1, [16, 16, 1])  # 1 input, 2 hidden layers with 4 neurons each, and 1 output neuron
 
 # Train the model using the new train function
-loss = train(n, xs, ys, steps=2000, learningRate=0.1)
+loss = train(n, inputs, targets, steps=100, learningRate=0.1)
 
 print("")
-print("Final parameters:")
+print("Final parameters:")  
 print("")
-for x, ygt in zip(xs, ys):
+for x, ygt in zip(inputs, targets):
     ypred = n(x)
-    print(f"Input: {x}, Predicted: {ypred.data}, Ground Truth: {ygt}")# display the final of the model
-# draw_dot(loss).render('example', view=True)  # This will create a file named 'example.svg' and open it
+    print(f"Input: {x[0].data}, Predicted: {ypred.data}, Ground Truth: {ygt.data}")
+
+# display the final of the model
+# draw_dot(loss).render('quadratic', view=True)  # This will create a file named 'quadratic.svg' and open it
 
