@@ -21,13 +21,13 @@ def train(model, inputs, targets, steps=2000, learningRate=0.1):
 
         # Zero gradients, backward pass
         for p in model.parameters():
-            p.grad = 0.0
+            p.gradient = 0.0
         loss.backward()
 
         # Gradient descent
         learning_rate = 0.001
         for p in model.parameters():
-            p.data -= learning_rate * p.grad
+            p.data -= learning_rate * p.gradient
 
         if k % 100 == 0:
             print(f"Epoch {k}, Loss: {loss.data:.4f}")

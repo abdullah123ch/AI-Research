@@ -35,7 +35,7 @@ def train(model, xs, ys, steps=2000, learningRate=0.1):
     return loss
 
 def f(x):
-    return 2 * x**2 + 3 * x + 1
+    return 2 * x**3 - 3 * x**2 + x + 5
 
 import random
 
@@ -50,10 +50,10 @@ def generate_data():
 
 inputs, targets = generate_data()
 
-n = MLP(1, [16, 16, 1])  # 1 input, 2 hidden layers with 4 neurons each, and 1 output neuron
+n = MLP(1, [8, 1])  # 1 input, 2 hidden layers with 4 neurons each, and 1 output neuron
 
 # Train the model using the new train function
-loss = train(n, inputs, targets, steps=100, learningRate=0.1)
+loss = train(n, inputs, targets, steps=3500, learningRate=0.01)
 
 print("")
 print("Final parameters:")  
@@ -63,5 +63,5 @@ for x, ygt in zip(inputs, targets):
     print(f"Input: {x[0].data}, Predicted: {ypred.data}, Ground Truth: {ygt.data}")
 
 # display the final of the model
-# draw_dot(loss).render('quadratic', view=True)  # This will create a file named 'quadratic.svg' and open it
+draw_dot(loss).render('cubic', view=True)  # This will create a file named 'quadratic.svg' and open it
 

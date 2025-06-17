@@ -16,12 +16,15 @@ AutoGrad is a minimal neural network engine with automatic differentiation, insp
 
 ## Project Structure
 - **AutoGrad/ display.py:**  Visualization utilities for computation graphs 
-- **My_engine.py:**  Core engine for autograd and training 
-- **neural_net.py:** Neural network (MLP) implementation 
+- **AutoGrad/ My_engine.py:**  Core engine for autograd and training 
+- **AutoGrad/ neural_net.py:** Neural network (MLP) implementation 
 - **pycache:** Python cache files 
-- **AutoGrad vs Pytorch.py** Script for comparing with PyTorch  
 - **Example.py** Example usage and training script 
-- **example.svg** # Example output graph 
+- **example.svg** # Example output graph
+- **cubic.py** Cubic equation usage and training script 
+- **cubic.svg** # Cubic equation output graph 
+- **quadratic.py** quadratic equation usage and training script 
+- **quadratic.svg** # quadratic equation output graph
 - **README.md**  Project documentation
 
 ---

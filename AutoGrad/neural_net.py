@@ -2,7 +2,6 @@ import random
 from AutoGrad.My_engine import Value
 
 class Module:
-
     def zeroGrad(self):
         for p in self.parameters():
             p.gradient = 0
@@ -11,7 +10,6 @@ class Module:
         return []
 
 class Neuron(Module):
-
     def __init__(self, nin, nonlin=True):
         self.w = [Value(random.uniform(-1,1)) for _ in range(nin)]
         self.b = Value(0)
